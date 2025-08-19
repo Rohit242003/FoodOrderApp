@@ -1,4 +1,4 @@
-﻿using Day_41_FoodOrderingApp.Model;
+using Day_41_FoodOrderingApp.Model;
 using Day_41_FoodOrderingApp.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,15 +8,32 @@ namespace Day_41_FoodOrderingApp.Service
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IDeliveryPartnerRepository _partnerRepository;
 
-        public OrderService(IOrderRepository orderRepository)
+        public OrderService(IOrderRepository orderRepository, IDeliveryPartnerRepository partnerRepository)
         {
             _orderRepository = orderRepository;
+            _partnerRepository = partnerRepository;
         }
 
         public async Task<Order> CreateNewOrderAsync(Order order)
         {
+           
+            var allPartners = _partnerRepository.GetAll().ToList();
+
+            if (!allPartners.Any())
+            {
+                throw new InvalidOperationException("No delivery partners are available to assign to the order.");
+            }
+
+           
+            var random = new Random();
+            int randomIndex = random.Next(0, allPartners.Count);
+            var assignedPartner = allPartners.ElementAt(randomIndex);
+
             
+            order.DeliveryPartnerId = assignedPartner.DeliveryPartnerID;
+
             if (order.OrderAmount >= 500)
             {
                 
