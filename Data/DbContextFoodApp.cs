@@ -1,4 +1,4 @@
-﻿
+
 using Day_41_FoodOrderingApp.Model;
 using Microsoft.EntityFrameworkCore;
 namespace Day_41_FoodOrderingApp.Data
@@ -13,6 +13,7 @@ namespace Day_41_FoodOrderingApp.Data
         public DbSet<MenuItem> menuItems { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
